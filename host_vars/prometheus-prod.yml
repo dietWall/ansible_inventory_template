@@ -1,0 +1,4 @@
+---
+# EXAMPLE: Copy templates/monitoring-server.yml and edit for a new host
+# ansible_host: 192.168.1.100
+# monitoring_node_exporter: true

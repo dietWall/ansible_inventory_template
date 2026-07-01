@@ -1,0 +1,5 @@
+---
+# EXAMPLE: Copy templates/app-server.yml and edit for a new host
+# ansible_host: 192.168.1.51
+# monitoring_node_exporter: true
+# monitoring_process_exporter: false

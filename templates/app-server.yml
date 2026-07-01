@@ -1,0 +1,7 @@
+---
+# IP address or DNS name of the host
+ansible_host: <INSERT_IP_ADDRESS_OR_DNS_NAME>
+
+# Enable specific exporters (feature flags)
+monitoring_node_exporter: false
+monitoring_process_exporter: false

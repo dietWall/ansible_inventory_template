@@ -1,0 +1,10 @@
+---
+# Staging inventory - list all staging hosts here
+all:
+  children:
+    linux_servers:
+      hosts:
+        # Add staging servers below
+    monitoring_servers:
+      hosts:
+        # Add monitoring servers below (if any)

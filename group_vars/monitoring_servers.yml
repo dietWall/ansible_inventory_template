@@ -1,0 +1,3 @@
+---
+# Variables specific to monitoring servers (e.g., Prometheus)
+# Add monitoring-specific configuration here if needed

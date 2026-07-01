@@ -1,0 +1,10 @@
+---
+# Production inventory - list all production hosts here
+all:
+  children:
+    linux_servers:
+      hosts:
+        # Add production servers below
+    monitoring_servers:
+      hosts:
+        # Add monitoring servers below (if any)

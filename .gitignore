@@ -1,0 +1,6 @@
+*.retry
+*.log
+.ansible_vault_password
+*secret*
+.idea/
+.vscode/
