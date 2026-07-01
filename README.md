@@ -57,6 +57,51 @@ chmod 600 ~/.ansible_vault_pass
 
 3. **Add the host** to `production.yml` or `staging.yml` if needed
 
+## Server Template Structure
+
+Each server configuration consists of two files:
+
+**`<hostname>.yml`** - Public configuration (no secrets):
+- `ansible_host` - IP address or DNS name
+- Feature flags (`monitoring_node_exporter`, etc.)
+- References to vault variables for credentials
+
+**`vault.yml`** - Encrypted secrets file (if needed):
+- `vault_user` - SSH login user
+- `vault_password` - User password (if using password auth)
+- `vault_become_password` - Sudo/admin password
+
+The template in `templates/app-server.yml` starts as a basic template. For servers requiring sudo access, create a corresponding `vault.yml` in the same directory.
+
+## Example Server Setup
+
+```bash
+# Create a new server configuration
+cp templates/app-server.yml host_vars/my-new-server.yml
+
+# Add to inventory
+echo "my-new-server ansible_connection=ssh" >> production.yml
+
+# Create encrypted vault file for credentials (optional)
+echo "123" | ansible-vault encrypt host_vars/my-new-server/vault.yml \
+    --name vault_user \
+    --name vault_password \
+    --name vault_become_password
+```
+
+## Adding a New Server
+
+1. **Copy the template:**
+   ```bash
+   cp templates/app-server.yml host_vars/<hostname>.yml
+   ```
+
+2. **Edit the copied file** with:
+   - The host's `ansible_host` (IP or DNS name)
+   - Enable required feature flags (exporters, etc.)
+
+3. **Add the host** to `production.yml` or `staging.yml` if needed
+
 ## Template Variables
 
 | Variable | Description |
@@ -89,13 +134,20 @@ The script will automatically detect and use `~/.ansible_vault_pass` (or overrid
 
 ## Sudo Password Management
 
-For hosts requiring sudo access, store the password securely using Ansible Vault:
+For hosts requiring sudo access, store credentials securely using Ansible Vault:
 
 ```bash
-ansible-vault edit group_vars/all.yml
+ansible-vault edit host_vars/<hostname>/vault.yml
 ```
 
-See `group_vars/all.yml` for the `ansible_become_password` configuration.
+The vault file stores:
+- `vault_user` - SSH login user
+- `vault_password` - User password (if using password authentication)
+- `vault_become_password` - Sudo/admin password
+
+These are referenced in the host's main config file via `{{ vault_* }}` variables.
+
+See `group_vars/all.yml` for the global `ansible_become_password` configuration.
 
 ## Usage Scenarios
 
