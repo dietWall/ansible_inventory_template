@@ -1,0 +1,34 @@
+---
+- name: "Sanity Check: Verify Servers and Generate System Report"
+  hosts: all
+  gather_facts: true   # Enable automatic collection of system information
+  become: "{{ ansible_connection | default('') != 'winrm' and ansible_connection | default('') != 'psrp' }}"
+  # Enables 'become' (sudo) only for Linux, since Windows runs as admin by default
+
+  tasks:
+    - name: "Generate system report (Linux)"
+      ansible.builtin.debug:
+        msg:
+          - "=========================================="
+          - "HOST:       {{ inventory_hostname }}"
+          - "SSH-USER:   {{ ansible_user | default('Standard-User') }}"
+          - "IP (Ansible): {{ ansible_host }}"
+          - "IP (System):  {{ ansible_default_ipv4.address | default('No IPv4') }}"
+          - "OS:         {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "ARCH:       {{ ansible_architecture }}"
+          - "TYPE:        {{ ansible_virtualization_type | default('Unknown (Physical if not set)') }}"
+          - "=========================================="
+      when: ansible_os_family != 'Windows'
+
+    - name: "Generate system report (Windows)"
+      ansible.builtin.debug:
+        msg:
+          - "=========================================="
+          - "HOST:       {{ inventory_hostname }}"
+          - "WIN-USER:   {{ ansible_user | default('Standard-User') }}"
+          - "IP (Ansible): {{ ansible_host }}"
+          - "IP (System):  {{ ansible_ip_addresses | select('match', '^192\\.|^10\\.|^172\\.') | first | default('No IP') }}"
+          - "OS:         {{ ansible_distribution }} (Version: {{ ansible_distribution_version }})"
+          - "ARCH:       {{ ansible_architecture }}"
+          - "=========================================="
+      when: ansible_os_family == 'Windows'

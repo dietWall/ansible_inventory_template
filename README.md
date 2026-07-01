@@ -40,3 +40,45 @@ This repository serves as the **Single Source of Truth** for the server infrastr
 - `ansible_host` - IP address or DNS name (required)
 - `monitoring_node_exporter` - Enable node exporter monitoring
 - `monitoring_process_exporter` - Enable process exporter monitoring
+
+## Infrastructure Check & System Report
+
+Run `check-infrastructure.yml` to verify server connectivity, permissions, and collect system information (OS, IP, architecture) for a quick health report.
+
+```bash
+ansible-playbook -i production.yml check-infrastructure.yml [-K]
+```
+
+Add `-K` if your hosts require sudo password authentication.
+
+## Sudo Password Management
+
+For hosts requiring sudo access, store the password securely using Ansible Vault:
+
+```bash
+ansible-vault edit group_vars/all.yml
+```
+
+See `group_vars/all.yml` for the `ansible_become_password` configuration.
+
+## Running the Sanity Check
+
+The `run-check.sh` script automates the setup and execution of the infrastructure check:
+
+1. Creates a Python virtual environment (`.venv/`)
+2. Installs Ansible and dependencies
+3. Runs `check-infrastructure.yml` against your inventory
+
+```bash
+# Create venv, install deps, and run the playbook
+./run-check.sh
+```
+
+For encrypted inventories, create a vault password file first:
+
+```bash
+echo "your-password" > ~/.ansible_vault_pass
+chmod 600 ~/.ansible_vault_pass
+```
+
+The script will automatically detect and use `~/.ansible_vault_pass` (or override via `ANSIBLE_VAULT_PASSWORD_FILE`).
