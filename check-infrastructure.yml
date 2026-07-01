@@ -10,15 +10,15 @@
       ansible.builtin.debug:
         msg:
           - "=========================================="
-          - "HOST:       {{ inventory_hostname }}"
-          - "SSH-USER:   {{ ansible_user | default('Standard-User') }}"
+          - "HOST:         {{ inventory_hostname }}"
+          - "SSH-USER:     {{ ansible_user | default('Standard-User') }}"
           - "IP (Ansible): {{ ansible_host }}"
-          - "IP (System):  {{ ansible_default_ipv4.address | default('No IPv4') }}"
-          - "OS:         {{ ansible_distribution }} {{ ansible_distribution_version }}"
-          - "ARCH:       {{ ansible_architecture }}"
-          - "TYPE:        {{ ansible_virtualization_type | default('Unknown (Physical if not set)') }}"
+          - "IP (System):  {{ ansible_facts['default_ipv4']['address'] | default('No IPv4') }}"
+          - "OS:           {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}"
+          - "ARCH:         {{ ansible_facts['architecture'] }}"
+          - "TYPE:         {{ ansible_facts['virtualization_type'] | default('Unknown (Physical if not set)') }}"
           - "=========================================="
-      when: ansible_os_family != 'Windows'
+      when: ansible_facts['os_family'] != 'Windows'
 
     - name: "Generate system report (Windows)"
       ansible.builtin.debug:
@@ -31,4 +31,4 @@
           - "OS:         {{ ansible_distribution }} (Version: {{ ansible_distribution_version }})"
           - "ARCH:       {{ ansible_architecture }}"
           - "=========================================="
-      when: ansible_os_family == 'Windows'
+      when: ansible_facts['os_family'] == 'Windows'

@@ -1,6 +1,6 @@
 ---
 # Global SSH and connection settings
-ansible_user: dw
+ansible_user: "user"
 ansible_ssh_private_key_file: "~/.ssh/id_ed25519"
 
 # Default: Disable all exporters unless explicitly enabled per host
