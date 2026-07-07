@@ -1,5 +1,5 @@
 ---
-ansible_host: your_server_ip_or_hostname
+ansible_host: your_server
 # variables: which services are installed there
 monitoring_node_exporter: true
 monitoring_process_exporter: true
@@ -8,7 +8,13 @@ monitoring_process_exporter: true
 ansible_user: "{{ vault_user }}" # vault_user should reside in ./vault.yml => defined by it
 ansible_password: "{{ vault_password }}" # vault_password should reside in ./vault.yml
 ansible_become_password: "{{ vault_become_pw }}" # vault_user or vault_become_password should reside in ./vault.yml
+# the variable names used in vault (encrypted, ansible-vault will read and provide them)
+# vault_user: ""
+# vault_password: ""
+# vault_become_pw: ""
 
+# defined in .env
+ssh_public_key_path: "{{ lookup('env', 'ANSIBLE_PRIVATE_KEY_FILE') }}"
 # workaround for ubuntu 26.04: ansible cannot work with the newest sudo.rs
 # as long as its not fixed: use the old sudo.ws
 ansible_become_exe: /usr/bin/sudo.ws

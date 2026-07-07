@@ -5,6 +5,8 @@ all:
     linux_servers:
       hosts:
         # Add production servers below
+        your_server
+        
     monitoring_servers:
       hosts:
         # Add monitoring servers below (if any)
