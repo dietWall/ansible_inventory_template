@@ -1,14 +1,12 @@
 ---
-ansible_host: your_server
-# variables: which services are installed there
-monitoring_node_exporter: true
-monitoring_process_exporter: true
+ansible_host: your-server
 
 # credentials declaration, this are the native ansible variables
 ansible_user: "{{ vault_user }}" # vault_user should reside in ./vault.yml => defined by it
 ansible_password: "{{ vault_password }}" # vault_password should reside in ./vault.yml
 ansible_become_password: "{{ vault_become_pw }}" # vault_user or vault_become_password should reside in ./vault.yml
-# the variable names used in vault (encrypted, ansible-vault will read and provide them)
+
+# the variable names are expected to be defined
 # vault_user: ""
 # vault_password: ""
 # vault_become_pw: ""
