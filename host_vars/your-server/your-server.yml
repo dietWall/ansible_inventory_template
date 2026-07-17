@@ -11,8 +11,6 @@ ansible_become_password: "{{ vault_become_pw }}" # vault_user or vault_become_pa
 # vault_password: ""
 # vault_become_pw: ""
 
-# defined in .env
-ssh_public_key_path: "{{ lookup('env', 'ANSIBLE_PRIVATE_KEY_FILE') }}"
 # workaround for ubuntu 26.04: ansible cannot work with the newest sudo.rs
 # as long as its not fixed: use the old sudo.ws
 ansible_become_exe: /usr/bin/sudo.ws
